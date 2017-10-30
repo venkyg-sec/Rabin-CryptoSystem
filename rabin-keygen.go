@@ -20,8 +20,11 @@ func main() {
     publickeyFileName := os.Args[1]
     privateKeyFileName := os.Args[2]
 
-    p := getprimeNumber()
-    q := getprimeNumber()
+    // p := getprimeNumber()
+    // q := getprimeNumber()
+
+    p := big.NewInt(7)
+    q := big.NewInt(11)
 
     N := getPublicKey(p,q)
 
