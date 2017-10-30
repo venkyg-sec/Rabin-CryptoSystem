@@ -6,6 +6,7 @@ import (
   "io/ioutil"
   "math/big"
   "os"
+  "crypto/sha256"
 )
 
 func main() {
@@ -23,11 +24,23 @@ func main() {
   N := ExtractDetailsFromPublicKeyFile(file_name)
 
   Ciphertext := Encrypt(Message, N)
-  fmt.Println("Ciphertext is ", Ciphertext)
+  CipherTextInString := Ciphertext.String()
+
+  hashofMessageInString := getMessageInString(MessageInString)
+
+  output := CipherTextInString + hashofMessageInString
+  fmt.Println(output)
 
   }
 }
 
+func getMessageInString(MessageInString string)(string) {
+
+  sum := sha256.Sum256([]byte(MessageInString))
+  sumInHex := fmt.Sprintf("%x", sum)
+  return sumInHex
+
+}
 func Encrypt(Message *big.Int, N *big.Int) (*big.Int) {
 
   exponentationComponent := big.NewInt(2)
