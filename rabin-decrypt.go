@@ -7,6 +7,7 @@ import (
   "strings"
   "math/big"
   "os"
+  "crypto/sha256"
 )
 
 func main() {
@@ -22,18 +23,50 @@ func main() {
     CipherTextInString := os.Args[2]
 
     N, p,q := ExtractDetailsFromPrivateKeyFile(file_name)
+    hashofMessageInString := CipherTextInString[(len(CipherTextInString) - 64):
+    len(CipherTextInString)]
+    CipherTextInString = CipherTextInString[0:(len(CipherTextInString) - 64)]
     Ciphertext := ConvertCipherTextToBigInt(CipherTextInString)
 
     m1, m2, m3, m4 := Decrypt(p,q,Ciphertext,N)
-    fmt.Println("m1 is ", m1)
-    fmt.Println("m2 is ", m2)
-    fmt.Println("m3 is ", m3)
-    fmt.Println("m4 is ", m4)
+
+    message := compareMessageAndHash(m1,m2,m3,m4,hashofMessageInString)
+    fmt.Println(" The Message is ", message)
 
   }
 
 }
 
+func compareMessageAndHash(m1 *big.Int,m2 *big.Int, m3 *big.Int, m4 *big.Int,
+hashofMessageInString string) (*big.Int) {
+
+  m1Hash := getMessageHashInString(m1.String())
+  m2Hash := getMessageHashInString(m2.String())
+  m3Hash := getMessageHashInString(m3.String())
+  m4Hash := getMessageHashInString(m4.String())
+
+  message := big.NewInt(0)
+
+  if m1Hash == hashofMessageInString {
+    message = message.Set(m1)
+  } else if m2Hash == hashofMessageInString {
+      message = message.Set(m2)
+  } else if m3Hash == hashofMessageInString {
+      message = message.Set(m3)
+    } else if m4Hash == hashofMessageInString {
+        message = message.Set(m4)
+      }
+      
+  return message
+}
+
+func getMessageHashInString(MessageInString string)(string) {
+
+  sum := sha256.Sum256([]byte(MessageInString))
+  sumInHex := fmt.Sprintf("%x", sum)
+  return sumInHex
+
+}
 func Decrypt(p *big.Int, q *big.Int, C *big.Int, N *big.Int) (*big.Int, *big.Int,
 *big.Int, *big.Int) {
 
