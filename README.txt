@@ -20,6 +20,9 @@ Usage :
 2. ./rabin-encrypt <publickeyFileName> <message in decimal format>
 3. ./rabin-decrypt <privateKeyFileName> <ciphertext in decimal format>
 
+Details :
+1. For Rabin-encrypt, I've appended the sha256 Hash of the original message to the ciphertext so that I can easily identify the original message
+2. For Rabin-decrypt, my program would first strip the 64 character string (32 byte) from the input and then compute a hash on the 4 decrypted messages and compare the same to see which was the original message.
 
 License :
 
