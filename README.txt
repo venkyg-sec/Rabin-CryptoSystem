@@ -1,7 +1,7 @@
 This repository consists of 3 files, namely
 
 1. rabin-keygen.go -> Would generate the private and public key components as per Rabin system. All algorithms have been implemented from
-scratch (Extended Euclidean Algorithm, Miller-Rabin Test for primality and Square and Multiply algorithm for modular exponentiation)
+scratch (Miller-Rabin Test for primality and Square and Multiply algorithm for modular exponentiation)
 
 2. rabin-encrypt.go -> Performs rabin encryption given the public key file (N) and message in decimal format.
 
