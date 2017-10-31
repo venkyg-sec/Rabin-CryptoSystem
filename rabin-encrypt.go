@@ -29,7 +29,9 @@ func main() {
   hashofMessageInString := getMessageHashInString(MessageInString)
 
   output := CipherTextInString + hashofMessageInString
-  fmt.Println(output)
+  
+  // I've concatenated the SHA256 hash of the message with the ciphertext
+  fmt.Println(" The ciphertext is ", output)
 
   }
 }
