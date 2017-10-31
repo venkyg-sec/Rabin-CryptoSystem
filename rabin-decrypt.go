@@ -30,11 +30,6 @@ func main() {
 
     m1, m2, m3, m4 := Decrypt(p,q,Ciphertext,N)
 
-    fmt.Println(" The m1 is ", m1)
-    fmt.Println(" The m2 is ", m2)
-    fmt.Println(" The m3 is ", m3)
-    fmt.Println(" The m4 is ", m4)
-
     message := compareMessageAndHash(m1,m2,m3,m4,hashofMessageInString)
     fmt.Println(" The Message is ", message)
 

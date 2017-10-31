@@ -20,10 +20,10 @@ func main() {
     publickeyFileName := os.Args[1]
     privateKeyFileName := os.Args[2]
 
-    p := big.NewInt(7)
-    q := big.NewInt(11)
-    // p := generateRabinPrimeNumber()
-    // q := generateRabinPrimeNumber()
+    // p := big.NewInt(7)
+    // q := big.NewInt(11)
+    p := generateRabinPrimeNumber()
+    q := generateRabinPrimeNumber()
     //
     // fmt.Println(" P mod 4 is ", big.NewInt(0).Mod(p,big.NewInt(4)))
     // fmt.Println(" Q mod 4 is ", big.NewInt(0).Mod(q,big.NewInt(4)))
@@ -218,29 +218,38 @@ func isaPrimeNumber(number *big.Int, accuracyFactor *big.Int) (bool) {
   }
 }
 
-func squareAndMultiplyWithoutMod(num *big.Int, exp *big.Int) (*big.Int){
+// Required since the previous function handles only exponentiation when I have
+// a mod value
 
-	var i int
-	res := big.NewInt(1)
+func squareAndMultiplyWithoutMod(number *big.Int, exponent *big.Int) (*big.Int){
+
+	value := big.NewInt(1)
 	//Start square and multiply
-	binExp := fmt.Sprintf("%b", exp)
-	if exp == big.NewInt(1){
-		return num
+	binExp := fmt.Sprintf("%b", exponent)
+  binExpLength := len(binExp)
+
+	if exponent == big.NewInt(1){
+		return number
 	}
-	for i = 1; i < len(binExp); i++{
-		if binExp[i] == 49{
-			//sq and mul
-			res.Mul(res,res)
-			res.Mul(res,num)
+
+	for i := 1; i < binExpLength; i++{
+    // 49 is the ASCII representation of 1 and 48 is the ASCII representation
+    // of 0
+		if byte(binExp[i]) == byte(49){
+
+      // temp := big.NewInt(0)
+			value.Mul(value,value)
+			value.Mul(value,number)
 
 		}else{
-			//only sq
-			res.Mul(res,res)
+
+      // temp := big.NewInt(0)
+			value.Mul(value,value)
 
 		}
 	}
 
-	return res
+	return value
 
 }
 
