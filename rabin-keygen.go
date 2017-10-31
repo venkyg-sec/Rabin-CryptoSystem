@@ -20,15 +20,21 @@ func main() {
     publickeyFileName := os.Args[1]
     privateKeyFileName := os.Args[2]
 
-    p := generateRabinPrimeNumber()
-    q := generateRabinPrimeNumber()
-
+    p := big.NewInt(7)
+    q := big.NewInt(11)
+    // p := generateRabinPrimeNumber()
+    // q := generateRabinPrimeNumber()
+    //
+    // fmt.Println(" P mod 4 is ", big.NewInt(0).Mod(p,big.NewInt(4)))
+    // fmt.Println(" Q mod 4 is ", big.NewInt(0).Mod(q,big.NewInt(4)))
     pCopy := big.NewInt(0)
     qCopy := big.NewInt(0)
     pCopy = pCopy.Set(p)
-    qCopy = pCopy.Set(q)
+    qCopy = qCopy.Set(q)
+
 
     N := getPublicKey(pCopy,qCopy)
+    fmt.Println("N is ", N)
 
     WritePublicKeyInformationToFile(N,publickeyFileName)
     WritePrivateKeyInformationToFile(N,p,q,privateKeyFileName )
@@ -181,8 +187,8 @@ func isaPrimeNumber(number *big.Int, accuracyFactor *big.Int) (bool) {
     // Fixing value 10000000000 for calculation purpose
     // To resue the squareAndMultiple algorithm but not affect the modulo part
       r = r.Add(r,big.NewInt(1))
-      exponentitalR = squareAndMultiple(big.NewInt(2),
-      r, big.NewInt(10000000))
+      exponentitalR = squareAndMultiplyWithoutMod(big.NewInt(2),
+      r)
 
       } else {
         break
@@ -192,8 +198,8 @@ func isaPrimeNumber(number *big.Int, accuracyFactor *big.Int) (bool) {
 
   r = r.Sub(r,big.NewInt(1))
 
-  exponentitalR = squareAndMultiple(big.NewInt(2),
-  r, big.NewInt(10000000))
+  exponentitalR = squareAndMultiplyWithoutMod(big.NewInt(2),
+  r)
 
   d := big.NewInt(0)
   d = d.Div(varNumber,exponentitalR)
@@ -212,6 +218,31 @@ func isaPrimeNumber(number *big.Int, accuracyFactor *big.Int) (bool) {
   }
 }
 
+func squareAndMultiplyWithoutMod(num *big.Int, exp *big.Int) (*big.Int){
+
+	var i int
+	res := big.NewInt(1)
+	//Start square and multiply
+	binExp := fmt.Sprintf("%b", exp)
+	if exp == big.NewInt(1){
+		return num
+	}
+	for i = 1; i < len(binExp); i++{
+		if binExp[i] == 49{
+			//sq and mul
+			res.Mul(res,res)
+			res.Mul(res,num)
+
+		}else{
+			//only sq
+			res.Mul(res,res)
+
+		}
+	}
+
+	return res
+
+}
 
 func millerRabinPrimalityTest(number *big.Int, d *big.Int,
   r *big.Int) (bool) {
@@ -222,7 +253,7 @@ func millerRabinPrimalityTest(number *big.Int, d *big.Int,
   numberTemp := big.NewInt(0)
   numberTemp = (numberTemp.Sub(number, big.NewInt(4)))
   //aTemp := rand.Int63n(numberTemp.Int64()) + 2
-  aTemp := int64(100001)
+  aTemp := int64(1000000000001)
   a := big.NewInt(aTemp)
 
   x := squareAndMultiple(a,d,number)
