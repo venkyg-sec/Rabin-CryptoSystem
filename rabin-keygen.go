@@ -229,7 +229,11 @@ func isaPrimeNumber(number *big.Int, accuracyFactor *big.Int) (bool) {
 func squareAndMultiplyWithoutMod(number *big.Int, exponent *big.Int) (*big.Int){
 
 	value := big.NewInt(1)
-	//Start square and multiply
+
+  // Below line to avail the binary
+  // Operation performed later - > If 1, square and multiple
+  // If 0, only square
+  
 	binExp := fmt.Sprintf("%b", exponent)
   binExpLength := len(binExp)
 
