@@ -61,6 +61,9 @@ func ExtractDetailsFromPublicKeyFile(file_name string) (*big.Int) {
   } else {
 
   NinString := string(FileContent)
+  // Below statements to remove left and right bracket from the string
+  NinString = NinString[1:(len(NinString) - 1)]
+
 
   boolError := false
   N, boolError = N.SetString(NinString,10)

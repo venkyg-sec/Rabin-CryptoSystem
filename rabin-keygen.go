@@ -62,7 +62,10 @@ func generateRabinPrimeNumber() (*big.Int) {
 func WritePublicKeyInformationToFile(N *big.Int, publickeyFileName string) {
 
   NStringToWrite := N.String()
-  valueToWrite := NStringToWrite
+  leftBracket := "("
+  rightBracket := ")"
+
+  valueToWrite := leftBracket + NStringToWrite + rightBracket
 
   err := ioutil.WriteFile(publickeyFileName, []byte(valueToWrite), 0644)
   if err != nil {
@@ -76,11 +79,13 @@ func WritePrivateKeyInformationToFile(N *big.Int, p *big.Int, q *big.Int,
 
     NStringToWrite := N.String()
     commaCharacter := ","
+    leftBracket := "("
+    rightBracket := ")"
     pStringToWrite := p.String()
     qStringToWrite := q.String()
 
-    valueToWrite := NStringToWrite + commaCharacter + pStringToWrite +
-    commaCharacter + qStringToWrite
+    valueToWrite := leftBracket + NStringToWrite + commaCharacter + pStringToWrite +
+    commaCharacter + qStringToWrite + rightBracket
 
     err := ioutil.WriteFile(privateKeyFileName, []byte(valueToWrite), 0644)
     if err != nil {

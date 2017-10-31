@@ -192,7 +192,11 @@ func ExtractDetailsFromPrivateKeyFile(file_name string) (*big.Int, *big.Int,
     fmt.Println(" Error readng data from the file")
   } else {
 
-  FileContentSliced := strings.Split(string(FileContent), ",")
+  FileContentString := string(FileContent)
+  
+  // Below statements to remove left and right bracket from the string
+  FileContentString = FileContentString[1:(len(FileContentString) - 1)]
+  FileContentSliced := strings.Split(FileContentString, ",")
 
   NinString := FileContentSliced[0]
   pinString := FileContentSliced[1]
