@@ -30,6 +30,11 @@ func main() {
 
     m1, m2, m3, m4 := Decrypt(p,q,Ciphertext,N)
 
+    fmt.Println(" The m1 is ", m1)
+    fmt.Println(" The m2 is ", m2)
+    fmt.Println(" The m3 is ", m3)
+    fmt.Println(" The m4 is ", m4)
+
     message := compareMessageAndHash(m1,m2,m3,m4,hashofMessageInString)
     fmt.Println(" The Message is ", message)
 
@@ -56,7 +61,7 @@ hashofMessageInString string) (*big.Int) {
     } else if m4Hash == hashofMessageInString {
         message = message.Set(m4)
       }
-      
+
   return message
 }
 
@@ -85,12 +90,16 @@ func Decrypt(p *big.Int, q *big.Int, C *big.Int, N *big.Int) (*big.Int, *big.Int
 
   // Handling the 2 statements required to calculate r, -r
   ypPmq := big.NewInt(0)
-  ypPmq = ypPmq.Mul(p,mq)
-  ypPmq = ypPmq.Mul(ypPmq,yp)
+  //ypPmq = ypPmq.Mul(p,mq)
+  ypPmq = ypPmq.Mul(yp,p)
+
+  ypPmq = ypPmq.Mul(ypPmq,mq)
+
 
   yqQmp := big.NewInt(0)
   yqQmp = yqQmp.Mul(q,mp)
   yqQmp = yqQmp.Mul(yqQmp,yq)
+
 
   ypPmqPlusyqQmp := big.NewInt(0)
   ypPmqPlusyqQmp = ypPmqPlusyqQmp.Add(ypPmq,yqQmp)
@@ -107,6 +116,9 @@ func Decrypt(p *big.Int, q *big.Int, C *big.Int, N *big.Int) (*big.Int, *big.Int
     temp = temp.Mul(temp,N)
     ypPmqPlusyqQmp = ypPmqPlusyqQmp.Add(ypPmqPlusyqQmp, temp)
 
+  } else {
+
+    ypPmqPlusyqQmp = ypPmqPlusyqQmp.Mod(ypPmqPlusyqQmp,N)
   }
 
   NegativeypPmqPlusyqQmp := big.NewInt(0)
@@ -131,6 +143,10 @@ func Decrypt(p *big.Int, q *big.Int, C *big.Int, N *big.Int) (*big.Int, *big.Int
     temp = temp.Mul(temp,N)
 
     ypPmqMinusyqQmp = ypPmqMinusyqQmp.Add(ypPmqMinusyqQmp, temp)
+
+  } else {
+
+    ypPmqMinusyqQmp = ypPmqMinusyqQmp.Mod(ypPmqMinusyqQmp,N)
 
   }
 

@@ -26,7 +26,7 @@ func main() {
   Ciphertext := Encrypt(Message, N)
   CipherTextInString := Ciphertext.String()
 
-  hashofMessageInString := getMessageInString(MessageInString)
+  hashofMessageInString := getMessageHashInString(MessageInString)
 
   output := CipherTextInString + hashofMessageInString
   fmt.Println(output)
@@ -34,13 +34,14 @@ func main() {
   }
 }
 
-func getMessageInString(MessageInString string)(string) {
+func getMessageHashInString(MessageInString string)(string) {
 
   sum := sha256.Sum256([]byte(MessageInString))
   sumInHex := fmt.Sprintf("%x", sum)
   return sumInHex
 
 }
+
 func Encrypt(Message *big.Int, N *big.Int) (*big.Int) {
 
   exponentationComponent := big.NewInt(2)

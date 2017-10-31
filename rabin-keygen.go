@@ -20,19 +20,37 @@ func main() {
     publickeyFileName := os.Args[1]
     privateKeyFileName := os.Args[2]
 
-    // p := getprimeNumber()
-    // q := getprimeNumber()
+    p := generateRabinPrimeNumber()
+    q := generateRabinPrimeNumber()
 
-    p := big.NewInt(7)
-    q := big.NewInt(11)
+    pCopy := big.NewInt(0)
+    qCopy := big.NewInt(0)
+    pCopy = pCopy.Set(p)
+    qCopy = pCopy.Set(q)
 
-    N := getPublicKey(p,q)
+    N := getPublicKey(pCopy,qCopy)
 
     WritePublicKeyInformationToFile(N,publickeyFileName)
-    WritePrivateKeyInformationToFile(N, p,q,privateKeyFileName )
+    WritePrivateKeyInformationToFile(N,p,q,privateKeyFileName )
 
   }
 
+}
+
+func generateRabinPrimeNumber() (*big.Int) {
+
+  temp := big.NewInt(0)
+  p := big.NewInt(0)
+
+  for true {
+    p = getprimeNumber()
+    temp = temp.Mod(p,big.NewInt(4))
+    if (temp.Cmp(big.NewInt(3)) == 0) {
+      break
+    }
+  }
+
+  return p
 }
 
 func WritePublicKeyInformationToFile(N *big.Int, publickeyFileName string) {
