@@ -34,7 +34,7 @@ func main() {
 
 
     N := getPublicKey(pCopy,qCopy)
-    fmt.Println("N is ", N)
+ //   fmt.Println("N is ", N)
 
     WritePublicKeyInformationToFile(N,publickeyFileName)
     WritePrivateKeyInformationToFile(N,p,q,privateKeyFileName )
